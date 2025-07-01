@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>حساب أسعار إيجار السيارات</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+      background-color: #e3f2fd; /* خلفية مريحة للعين */
+      color: #2c3e50;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 30px;
+    }
+
+    input, button {
+      padding: 12px 18px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    input {
+      width: 140px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #388E3C;
+    }
+
+    .theme-btn {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      padding: 8px 14px;
+      background-color: #2c3e50;
+      color: white;
+      font-size: 14px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .car-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .car-item {
+      width: 90%;
+      max-width: 600px;
+      background: #fdfdfd; /* كروت مطفية مريحة */
+      margin: 15px 0;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+      text-align: right;
+      transition: all 0.3s ease;
+    }
+
+    .car-name {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .car-price {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .car-total {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 12px;
+      color: #1e88e5;
+    }
+
+    /* الوضع الليلي */
+    body.dark-mode {
+      background-color: #12181c; /* خلفية ليلية مريحة */
+      color: #eeeeee;
+    }
+
+    body.dark-mode .car-item {
+      background-color: #1f2a33; /* كروت الوضع الليلي */
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode .car-price {
+      color: #ccc;
+    }
+
+    body.dark-mode button {
+      background-color: #6abf69;
+    }
+
+    body.dark-mode button:hover {
+      background-color: #4caf50;
+    }
+
+    body.dark-mode .theme-btn {
+      background-color: #6abf69;
+      color: #12181c;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="theme-btn" onclick="toggleTheme()">🌙 الوضع الليلي</button>
+
+  <h1>احسب أسعار إيجار السيارات</h1>
+
+  <label for="days" style="font-size: 20px;">مدة الإيجار (بالأيام):</label><br>
+  <input type="number" id="days" min="1" value="1">
+  <button onclick="calculatePrices()">احسب</button>
+
+  <div class="car-list" id="carList"></div>
+
+  <script>
+    const commission = 815;
+    const cars = [
+      { name: "Citroen C3", pricePerDay: 210 },
+      { name: "فورد فوكس Ford focus SW", pricePerDay: 270 },
+      { name: "Nissan Qashqai نيسان قشقاي", pricePerDay: 270 },
+      { name: "مرسيدس (CLA)", pricePerDay: 280 },
+      { name: "مرسيدس (GLB)", pricePerDay: 340 },
+      { name: "مرسيدس (E class)", pricePerDay: 430 },
+      { name: "مرسيدس (GLC)", pricePerDay: 390 },
+      { name: "بيجو 508", pricePerDay: 310 },
+      { name: "مرسيدس VITO", pricePerDay: 600 },
+      { name: "ستروين سبيس تورير", pricePerDay: 600 }
+    ];
+
+    function calculatePrices() {
+      const days = parseInt(document.getElementById("days").value);
+      const carListDiv = document.getElementById("carList");
+      carListDiv.innerHTML = '';
+
+      cars.forEach(car => {
+        const total = (car.pricePerDay * days) + commission;
+        const carDiv = document.createElement('div');
+        carDiv.className = 'car-item';
+        carDiv.innerHTML = `
+          <div class="car-name">${car.name}</div>
+          <div class="car-price">سعر اليوم: ${car.pricePerDay} زلوتي</div>
+          <div class="car-price">العمولة: ${commission} زلوتي</div>
+          <div class="car-total">الإجمالي (${days} أيام): ${total} زلوتي</div>
+        `;
+        carListDiv.appendChild(carDiv);
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+
+</body>
+</html>
