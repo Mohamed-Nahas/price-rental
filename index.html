@@ -10,7 +10,7 @@
       text-align: center;
       padding: 40px;
       margin: 0;
-      background-color: #e3f2fd; /* خلفية مريحة للعين */
+      background-color: #e3f2fd;
       color: #2c3e50;
       transition: all 0.3s ease;
     }
@@ -66,7 +66,7 @@
     .car-item {
       width: 90%;
       max-width: 600px;
-      background: #fdfdfd; /* كروت مطفية مريحة */
+      background: #fdfdfd;
       margin: 15px 0;
       padding: 25px;
       border-radius: 12px;
@@ -94,14 +94,13 @@
       color: #1e88e5;
     }
 
-    /* الوضع الليلي */
     body.dark-mode {
-      background-color: #12181c; /* خلفية ليلية مريحة */
+      background-color: #12181c;
       color: #eeeeee;
     }
 
     body.dark-mode .car-item {
-      background-color: #1f2a33; /* كروت الوضع الليلي */
+      background-color: #1f2a33;
       color: #ffffff;
       box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
     }
@@ -138,18 +137,108 @@
 
   <script>
     const commission = 815;
+
     const cars = [
-      { name: "Citroen C3", pricePerDay: 210 },
-      { name: "فورد فوكس Ford focus SW", pricePerDay: 270 },
-      { name: "Nissan Qashqai نيسان قشقاي", pricePerDay: 270 },
-      { name: "مرسيدس (CLA)", pricePerDay: 280 },
-      { name: "مرسيدس (GLB)", pricePerDay: 340 },
-      { name: "مرسيدس (E class)", pricePerDay: 430 },
-      { name: "مرسيدس (GLC)", pricePerDay: 390 },
-      { name: "بيجو 508", pricePerDay: 310 },
-      { name: "مرسيدس VITO", pricePerDay: 600 },
-      { name: "ستروين سبيس تورير", pricePerDay: 600 }
+      { 
+        name: "Citroen C3", 
+        prices: [
+          {min:1,max:3,price:240},
+          {min:4,max:6,price:220},
+          {min:7,max:10,price:210},
+          {min:11,max:20,price:200},
+          {min:21,max:30,price:190}
+        ]
+      },
+      { 
+        name: "فورد فوكس Ford focus SW", 
+        prices: [
+          {min:1,max:3,price:270},
+          {min:4,max:6,price:260},
+          {min:7,max:10,price:250},
+          {min:11,max:20,price:240},
+          {min:21,max:30,price:230}
+        ]
+      },
+      { 
+        name: "Nissan Qashqai نيسان قشقاي", 
+        prices: [
+          {min:1,max:3,price:290},
+          {min:4,max:6,price:270},
+          {min:7,max:10,price:250},
+          {min:11,max:20,price:240},
+          {min:21,max:30,price:230}
+        ]
+      },
+      { 
+        name: "مرسيدس (GLA)", 
+        prices: [
+          {min:1,max:3,price:300},
+          {min:4,max:6,price:280},
+          {min:7,max:10,price:250},
+          {min:11,max:20,price:240},
+          {min:21,max:30,price:230}
+        ]
+      },
+      { 
+        name: "مرسيدس (CLA)", 
+        prices: [
+          {min:1,max:3,price:300},
+          {min:4,max:6,price:280},
+          {min:7,max:10,price:260},
+          {min:11,max:20,price:250},
+          {min:21,max:30,price:240}
+        ]
+      },
+      { 
+        name: "مرسيدس (GLB)", 
+        prices: [
+          {min:1,max:3,price:340},
+          {min:4,max:6,price:310},
+          {min:7,max:10,price:290},
+          {min:11,max:20,price:280},
+          {min:21,max:30,price:260}
+        ]
+      },
+      { 
+        name: "بيجو (5008)", 
+        prices: [
+          {min:1,max:3,price:350},
+          {min:4,max:6,price:320},
+          {min:7,max:10,price:300},
+          {min:11,max:20,price:290},
+          {min:21,max:30,price:270}
+        ]
+      },
+      { 
+        name: "مرسيدس (VITO)", 
+        prices: [
+          {min:1,max:3,price:450},
+          {min:4,max:6,price:420},
+          {min:7,max:10,price:400},
+          {min:11,max:20,price:380},
+          {min:21,max:30,price:350}
+        ]
+      },
+      { 
+        name: "ستروين سبيس تورير", 
+        prices: [
+          {min:1,max:3,price:450},
+          {min:4,max:6,price:420},
+          {min:7,max:10,price:400},
+          {min:11,max:20,price:380},
+          {min:21,max:30,price:350}
+        ]
+      }
     ];
+
+    function getPriceForDays(car, days) {
+      for (let range of car.prices) {
+        if (days >= range.min && days <= range.max) {
+          return range.price;
+        }
+      }
+      return null;
+    }
 
     function calculatePrices() {
       const days = parseInt(document.getElementById("days").value);
@@ -157,16 +246,19 @@
       carListDiv.innerHTML = '';
 
       cars.forEach(car => {
-        const total = (car.pricePerDay * days) + commission;
-        const carDiv = document.createElement('div');
-        carDiv.className = 'car-item';
-        carDiv.innerHTML = `
-          <div class="car-name">${car.name}</div>
-          <div class="car-price">سعر اليوم: ${car.pricePerDay} زلوتي</div>
-          <div class="car-price">العمولة: ${commission} زلوتي</div>
-          <div class="car-total">الإجمالي (${days} أيام): ${total} زلوتي</div>
-        `;
-        carListDiv.appendChild(carDiv);
+        const dailyPrice = getPriceForDays(car, days);
+        if(dailyPrice !== null){
+          const total = (dailyPrice * days) + commission;
+          const carDiv = document.createElement('div');
+          carDiv.className = 'car-item';
+          carDiv.innerHTML = `
+            <div class="car-name">${car.name}</div>
+            <div class="car-price">سعر اليوم: ${dailyPrice} زلوتي</div>
+            <div class="car-price">العمولة: ${commission} زلوتي</div>
+            <div class="car-total">الإجمالي (${days} أيام): ${total} زلوتي</div>
+          `;
+          carListDiv.appendChild(carDiv);
+        }
       });
     }
 
